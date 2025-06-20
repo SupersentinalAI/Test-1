@@ -12,7 +12,7 @@ def test_gpt_dhan():
     response = gpt.generate(prompt)
     
     if "funds" in response.lower():
-        result = dhan.funds.get()
+        result = dhan.funds.get_fund_limits()
         print("✅ Funds:", result)
 
     if "portfolio" in response.lower() or "holdings" in response.lower():
