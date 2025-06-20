@@ -3,7 +3,7 @@ Handles holdings, positions, and position conversion.
 Clean, GPT-callable structure using DhanHTTP.
 """
 
-from dhan_http import DhanHTTP
+from brokers.dhan_http import DhanHTTP
 
 
 class Portfolio:
