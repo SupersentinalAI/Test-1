@@ -9,8 +9,8 @@ def test_gpt_dhan():
 
     prompt = "Check my Dhan funds and portfolio."
 
-    response = gpt.ask(prompt)
-
+    response = gpt.generate(prompt)
+    
     if "funds" in response.lower():
         result = dhan.funds()
         print("✅ Funds:", result)
