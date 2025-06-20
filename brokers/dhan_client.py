@@ -7,7 +7,6 @@ from brokers.historical import Historical
 from brokers.trader_control import TraderControl
 from brokers.market_feed import MarketFeed
 from brokers.order_update import OrderUpdate
-from brokers.full_depth import FullDepth
 
 class DhanClient:
     def __init__(self, context):
@@ -20,7 +19,6 @@ class DhanClient:
         self.trader_control = TraderControl(context)
         self.market_feed = MarketFeed(context)
         self.order_update = OrderUpdate(context)
-        self.full_depth = FullDepth(context)
 
     def describe_all(self):
         return {
@@ -33,5 +31,4 @@ class DhanClient:
             "trader_control": self.trader_control.describe(),
             "market_feed": self.market_feed.describe(),
             "order_update": self.order_update.describe(),
-            "full_depth": self.full_depth.describe()
         }
