@@ -3,7 +3,7 @@ Option chain utilities for retrieving real-time strikes, OI, Greeks, IV, and exp
 Clean, GPT-callable structure using DhanHTTP.
 """
 
-from dhan_http import DhanHTTP
+from brokers.dhan_http import DhanHTTP
 
 
 class OptionChain:
