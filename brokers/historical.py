@@ -4,7 +4,7 @@ Directly uses DhanHTTP and is GPT-callable.
 """
 
 import logging
-from dhan_http import DhanHTTP
+from brokers.dhan_http import DhanHTTP
 
 
 class Historical:
