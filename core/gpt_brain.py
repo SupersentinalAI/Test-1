@@ -10,7 +10,7 @@ class GPTBrain:
         self.max_retries = max_retries
         logging.basicConfig(level=logging.INFO)
 
-    def get_response(self, prompt):
+    def generate(self, prompt):
         retries = 0
         while retries < self.max_retries:
             try:
