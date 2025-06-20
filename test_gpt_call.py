@@ -1,6 +1,6 @@
 from core.context import Context
 from core.gpt_brain import GPTBrain
-from brokers.client import DhanClient
+from brokers.dhan_client import DhanClient
 
 def test_gpt_dhan():
     context = Context()
