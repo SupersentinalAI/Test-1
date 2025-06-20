@@ -3,7 +3,7 @@ Handles all order operations (place, modify, cancel, list) with Dhan API.
 Designed to be GPT-callable and connected to Messenger or TagRouter.
 """
 
-from dhan_http import DhanHTTP
+from brokers.dhan_http import DhanHTTP
 
 
 class Order:
