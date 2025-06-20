@@ -2,7 +2,7 @@
 Trader control functions, including kill switch activation for Dhan.
 """
 
-from dhan_http import DhanHTTP
+from brokers.dhan_http import DhanHTTP
 
 
 class TraderControl:
