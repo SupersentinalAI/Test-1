@@ -5,33 +5,29 @@ from datetime import datetime
 from collections import defaultdict
 import json
 
-
 class MarketFeed:
     market_feed_wss = 'wss://api-feed.dhan.co'
 
-    IDX = 0
-    NSE = 1
-    NSE_FNO = 2
-    NSE_CURR = 3
-    BSE = 4
-    MCX = 5
-    BSE_CURR = 7
-    BSE_FNO = 8
+    IDX, NSE, NSE_FNO, NSE_CURR, BSE, MCX, BSE_CURR, BSE_FNO = range(8)
+    Ticker, Quote, Depth, Full = 15, 17, 19, 21
 
-    Ticker = 15
-    Quote = 17
-    Depth = 19
-    Full = 21
-
-    def __init__(self, client_id, access_token, instruments, version='v1'):
-        self.client_id = client_id
-        self.access_token = access_token
-        self.instruments = instruments
-        self.version = version
+    def __init__(self, context):
+        self.client_id = context.dhan_client_id
+        self.access_token = context.dhan_access_token
+        self.instruments = getattr(context, "market_instruments", [])
+        self.version = "v1"
         self.ws = None
         self.loop = asyncio.get_event_loop()
         self.is_authorized = False
         self.data = ""
+
+    def describe(self):
+        return {
+            "module": "MarketFeed",
+            "client_id": bool(self.client_id),
+            "instruments": len(self.instruments),
+            "connected": self.ws is not None
+        }
 
     def run_forever(self):
         self.loop.run_until_complete(self.connect())
@@ -108,14 +104,15 @@ class MarketFeed:
             req_type = tup[2] if len(tup) == 3 else 15
             result[str(req_type)].append((ex, token))
         return {
-            k: [v[i:i+batch_size] for i in range(0, len(v), batch_size)]
+            k: [v[i:i + batch_size] for i in range(0, len(v), batch_size)]
             for k, v in result.items()
         }
 
     def _create_packet(self, instruments, req_code):
         header = self._header(req_code, 83 + 4 + len(instruments) * 21)
         num_inst = struct.pack('<I', len(instruments))
-        info = b''.join(struct.pack('<B20s', ex, str(token).encode().ljust(20, b'\0')) for ex, token in instruments)
+        info = b''.join(
+            struct.pack('<B20s', ex, str(token).encode().ljust(20, b'\0')) for ex, token in instruments)
         padding = b''.join(struct.pack('<B20s', 0, b'') for _ in range(100 - len(instruments)))
         return header + num_inst + info + padding
 
@@ -126,16 +123,11 @@ class MarketFeed:
 
     def _parse_response(self, data):
         first = struct.unpack('<B', data[0:1])[0]
-        if first == 2:
-            return self._parse_ticker(data)
-        elif first == 3:
-            return self._parse_depth(data)
-        elif first == 4:
-            return self._parse_quote(data)
-        elif first == 5:
-            return self._parse_oi(data)
-        elif first == 8:
-            return self._parse_full(data)
+        if first == 2: return self._parse_ticker(data)
+        if first == 3: return self._parse_depth(data)
+        if first == 4: return self._parse_quote(data)
+        if first == 5: return self._parse_oi(data)
+        if first == 8: return self._parse_full(data)
 
     def _parse_ticker(self, data):
         d = struct.unpack('<BHBIfI', data[0:16])
@@ -152,7 +144,7 @@ class MarketFeed:
         depth_data = d[5]
         depth = []
         for i in range(5):
-            pkt = struct.unpack('<IIHHff', depth_data[i*20:(i+1)*20])
+            pkt = struct.unpack('<IIHHff', depth_data[i * 20:(i + 1) * 20])
             depth.append({
                 "bid_qty": pkt[0], "ask_qty": pkt[1],
                 "bid_orders": pkt[2], "ask_orders": pkt[3],
@@ -199,7 +191,7 @@ class MarketFeed:
         depth_data = d[18]
         depth = []
         for i in range(5):
-            pkt = struct.unpack('<IIHHff', depth_data[i*20:(i+1)*20])
+            pkt = struct.unpack('<IIHHff', depth_data[i * 20:(i + 1) * 20])
             depth.append({
                 "bid_qty": pkt[0], "ask_qty": pkt[1],
                 "bid_orders": pkt[2], "ask_orders": pkt[3],
