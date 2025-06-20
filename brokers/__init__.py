@@ -7,7 +7,6 @@ from .portfolio import Portfolio
 from .option_chain import OptionChain
 from .historical import Historical
 from .market_feed import MarketFeed
-from .full_depth import FullDepth
 from .order_update import OrderUpdate
 from .trader_control import TraderControl
 
@@ -19,7 +18,6 @@ ALL_DHAN_MODULES = [
     OptionChain,
     Historical,
     MarketFeed,
-    FullDepth,
     OrderUpdate,
     TraderControl
 ]
