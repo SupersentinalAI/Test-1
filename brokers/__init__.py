@@ -6,7 +6,7 @@ from .super_order import SuperOrder
 from .portfolio import Portfolio
 from .option_chain import OptionChain
 from .historical import Historical
-from .marketfeed import MarketFeed
+from .market_feed import MarketFeed
 from .full_depth import FullDepth
 from .order_update import OrderUpdate
 from .trader_control import TraderControl
