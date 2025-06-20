@@ -3,7 +3,7 @@ Handles fund-related data retrieval and margin calculations from Dhan.
 Fully GPT-readable and compatible with Messenger/brain logic.
 """
 
-from dhan_http import DhanHTTP
+from brokers.dhan_http import DhanHTTP
 
 
 class Funds:
