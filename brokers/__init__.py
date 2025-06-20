@@ -13,7 +13,7 @@ from .trader_control import TraderControl
 
 ALL_DHAN_MODULES = [
     Funds,
-    Orders,
+    Order,
     SuperOrder,
     Portfolio,
     OptionChain,
