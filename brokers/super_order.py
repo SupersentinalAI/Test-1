@@ -3,7 +3,7 @@ Manage Dhan Super Orders: place, modify, cancel, list.
 Super Orders = ENTRY + TARGET + STOPLOSS bundled.
 """
 
-from dhan_http import DhanHTTP
+from brokers.dhan_http import DhanHTTP
 
 
 class SuperOrder:
